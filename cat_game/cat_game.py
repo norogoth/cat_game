@@ -15,6 +15,9 @@ white=(255,255,255)
 black=(0,0,0)
 teal=(0,150,80)
 
+#load images
+dog_img=pygame.image.load('doggo.png')
+dog_rect=dog_img.get_rect()
 cat_img=pygame.image.load('cat.png')
 food_img=pygame.image.load('food.png')
 food_img=pygame.transform.scale(food_img, (50,30))
@@ -28,9 +31,25 @@ def meow():
     if rand_meow==2:
         meow2.play()
 
-
+#coordinates of cat, the later, dog
 catx=randint(0,700)
 caty=randint(0,400)
+
+#cat hitbox
+cat_rect = cat_img.get_rect()
+cat_rect.topleft=((catx,caty))
+def dog():
+    global dogx
+    global dogy
+    dogx=randint(0,700)
+    dogy=randint(0,400)
+    while True:
+        if cat_rect.colliderect(dog_rect):
+            dogx = randint(0,700)
+            dogy=randint(0,400)
+        else:
+            break
+dog()
 foodx=randint(0,700)
 foody=randint(0,400)
 
@@ -41,23 +60,40 @@ pressed_right=False
 pressed_down=False
 pressed_up=False
 
+#Lose message
+fontObj = pygame.font.Font('freesansbold.ttf', 32)
+you_lose_text=fontObj.render('You Loose! :(',True,black,teal)
+lose_rect=you_lose_text.get_rect()
+lose_rect.center=(400,200)
+
 while True:
     DISPLAYSURF.fill(white)
 
-#cat hitbox
-    cat_rect = cat_img.get_rect()
-    cat_rect.topleft=((catx,caty))
     #pygame.draw.rect(DISPLAYSURF, teal, cat_rect, 1)
 #food bowl hitbox
+    cat_rect = cat_img.get_rect()
+    cat_rect.topleft = ((catx, caty))
     food_rect=food_img.get_rect()
     food_rect.topleft=((foodx,foody))
     #pygame.draw.rect(DISPLAYSURF, teal, food_rect,1)
 
 #collision detection
+    #dog chase
+    if dogx<=catx:
+        dogx+=2
+    if dogx>=catx:
+        dogx-=2
+    if dogy<=caty:
+        dogy+=2
+    if dogy >= caty:
+        dogy-=2
+    if cat_rect.colliderect(dog_rect):
+        DISPLAYSURF.blit(you_lose_text,lose_rect)
     cat_rect.colliderect(food_rect)
-
     DISPLAYSURF.blit(cat_img,(catx,caty))
     DISPLAYSURF.blit(food_img,(foodx,foody))
+    DISPLAYSURF.blit(dog_img,(dogx,dogy))
+    DISPLAYSURF.blit(dog_img,(dogx,dogy))
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
