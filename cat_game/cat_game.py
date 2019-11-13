@@ -62,11 +62,11 @@ pressed_up=False
 
 #Lose message
 fontObj = pygame.font.Font('freesansbold.ttf', 32)
-you_lose_text=fontObj.render('You Loose! :(',True,black,teal)
+you_lose_text=fontObj.render('You Lose! :(',True,black,teal)
 lose_rect=you_lose_text.get_rect()
 lose_rect.center=(400,200)
-
-while True:
+lose=0
+while lose==0:
     DISPLAYSURF.fill(white)
 
     #pygame.draw.rect(DISPLAYSURF, teal, cat_rect, 1)
@@ -89,6 +89,7 @@ while True:
         dogy-=2
     if cat_rect.colliderect(dog_rect):
         DISPLAYSURF.blit(you_lose_text,lose_rect)
+        lose=1
     cat_rect.colliderect(food_rect)
     DISPLAYSURF.blit(cat_img,(catx,caty))
     DISPLAYSURF.blit(food_img,(foodx,foody))
@@ -96,18 +97,19 @@ while True:
     DISPLAYSURF.blit(dog_img,(dogx,dogy))
 
     for event in pygame.event.get():
+        speed=6
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                catx += 5
+                catx += speed
                 pressed_left=True
             if event.key == pygame.K_RIGHT:
-                catx -= 5
+                catx -= speed
                 pressed_right=True
             if event.key==pygame.K_UP:
-                caty-=5
+                caty-=speed
                 pressed_up=True
             if event.key==pygame.K_DOWN:
-                caty+=5
+                caty+=speed
                 pressed_down=True
         if event.type==pygame.KEYUP:
             if event.key==pygame.K_LEFT:
