@@ -1,6 +1,9 @@
 import pygame, sys
 from pygame.locals import *
 from random import randint
+import os
+directory_path=os.getcwd()
+image_path=directory_path+'image.png'
 
 pygame.init()
 
@@ -23,6 +26,7 @@ cat_img=pygame.image.load('cat.png')
 food_img=pygame.image.load('food.png')
 food_img=pygame.transform.scale(food_img, (50,30))
 #load sounds
+music=pygame.mixer.music.load('cat_game_music.wav')
 meow1=pygame.mixer.Sound('meow1.wav')
 meow2=pygame.mixer.Sound('meow2.wav')
 yip=pygame.mixer.Sound('yip.wav')
@@ -76,6 +80,7 @@ score_rect.topleft=(0,0)
 bg=pygame.image.load("background.png")
 
 running=True
+pygame.mixer.music.play(-1)
 while running:
     if lose==0:
         DISPLAYSURF.fill(white)
@@ -111,8 +116,10 @@ while running:
         score_text = fontObj.render(str(score), True, black, white)
         DISPLAYSURF.blit(score_text,score_rect)
         if lose==1:
+            pygame.mixer.music.stop()
             you_lose_text = fontObj.render('You Lose! :( Your score was {}'.format(score), True, black, teal)
             DISPLAYSURF.blit(you_lose_text, lose_rect)
+
     else: #player has lost game
         pass
     for event in pygame.event.get():
